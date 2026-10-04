@@ -1,50 +1,24 @@
-package org.StudentManagementSystem.entity;
-
-import jakarta.persistence.*;
+package org.StudentManagementSystem.dto;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name="student_details")
-public class Student {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UpdateStudentResponseDTO {
     private Long id;
     private String name;
     private int age;
     private String email;
     private int rollNo;
     private String Subject;
-    private LocalDateTime createAt;
+    private String message;
     private LocalDateTime updatedAt;
 
-    public LocalDateTime getCreateAt() {
-        return createAt;
+    public String getMessage() {
+        return message;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
+    public void setMessage(String message) {
+        this.message = message;
     }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    private Boolean deleted;
-
 
     public Long getId() {
         return id;
@@ -92,5 +66,13 @@ public class Student {
 
     public void setSubject(String subject) {
         Subject = subject;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

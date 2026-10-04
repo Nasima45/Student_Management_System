@@ -1,5 +1,10 @@
 package org.StudentManagementSystem.controller;
 
+import jakarta.validation.Valid;
+import org.StudentManagementSystem.dto.CreateStudentRequestDTO;
+import org.StudentManagementSystem.dto.CreateStudentResponseDTO;
+import org.StudentManagementSystem.dto.UpdateStudentRequestDTO;
+import org.StudentManagementSystem.dto.UpdateStudentResponseDTO;
 import org.StudentManagementSystem.entity.Student;
 import org.StudentManagementSystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +25,16 @@ public class StudentController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        Student createdStudent = studentService.createStudent(student);
+    public ResponseEntity<CreateStudentResponseDTO> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
+        CreateStudentResponseDTO createdStudent = studentService.createStudent(student);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createdStudent);
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
-        Student studentResp = studentService.getStudentById(id);
+    public ResponseEntity<CreateStudentResponseDTO> getStudentById(@PathVariable Long id) {
+        CreateStudentResponseDTO studentResp = studentService.getStudentById(id);
         if (studentResp == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -37,14 +42,14 @@ public class StudentController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Student>> getAllStudent() {
-        List<Student> studentResp = studentService.getAllStudent();
+    public ResponseEntity<List<CreateStudentResponseDTO>> getAllStudent() {
+        List<CreateStudentResponseDTO> studentResp = studentService.getAllStudent();
         return ResponseEntity.status(HttpStatus.OK).body(studentResp);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id, @RequestBody Student student) {
-        Student studentResp = studentService.updateStudentDetails(id, student);
+    public ResponseEntity<UpdateStudentResponseDTO> updateStudent(@PathVariable Long id, @RequestBody UpdateStudentRequestDTO student) {
+        UpdateStudentResponseDTO studentResp = studentService.updateStudentDetails(id, student);
         if (studentResp == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -59,5 +64,13 @@ public class StudentController {
         }
         return ResponseEntity.ok("Record Deleted");
 
+    }
+    @PatchMapping("/softDelete/{id}")
+    public ResponseEntity<String> deleteStudentSoftly(@PathVariable Long id){
+        Boolean isDeleted = studentService.deleteStudentSoftly(id);
+        if(!isDeleted){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("Record removed");
     }
 }

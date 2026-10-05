@@ -6,6 +6,8 @@ import org.StudentManagementSystem.dto.UpdateStudentResponseDTO;
 import org.StudentManagementSystem.entity.Student;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class StudentMapper {
     public Student mapToEntity(CreateStudentRequestDTO studentRequestDto) {
@@ -16,6 +18,8 @@ public class StudentMapper {
         student.setSubject(studentRequestDto.getSubject());
         student.setRollNo(studentRequestDto.getRollNo());
         student.setDeleted(false);
+        student.setCreateAt(LocalDateTime.now());
+        student.setUpdatedAt(LocalDateTime.now());
         return student;
     }
 

@@ -10,6 +10,18 @@ public class CreateStudentRequestDTO {
     private String name;
     @Min(value = 18)
     private int age;
+
+    @Override
+    public String toString() {
+        return "CreateStudentRequestDTO{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", rollNo=" + rollNo +
+                ", Subject='" + Subject + '\'' +
+                '}';
+    }
+
     @Email
     private String email;
     private int rollNo;

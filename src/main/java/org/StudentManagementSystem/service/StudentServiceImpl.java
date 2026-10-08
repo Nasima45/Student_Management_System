@@ -9,49 +9,56 @@ import org.StudentManagementSystem.exception.DuplicateResourseException;
 import org.StudentManagementSystem.exception.ResourseNotFoundException;
 import org.StudentManagementSystem.mapper.StudentMapper;
 import org.StudentManagementSystem.repository.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class StudentService {
+public class StudentServiceImpl implements StudentService {
+    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
     private StudentRepository studentRepository;
     private StudentMapper studentMapper;
 
-    public StudentService(StudentRepository studentRepository,StudentMapper studentMapper
-                          ) {
+    public StudentServiceImpl(StudentRepository studentRepository,
+                              StudentMapper studentMapper)
+    {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
     }
 
     public CreateStudentResponseDTO createStudent(CreateStudentRequestDTO studentReq) {
+        logger.info("Students details need to be save {}",studentReq);
         Student student = studentMapper.mapToEntity(studentReq);
-        if(emailExists(student)){
-            throw new DuplicateResourseException(studentReq.getEmail()+" is already exists in our db");
+        if (emailExists(student)) {
+            throw new DuplicateResourseException(studentReq.getEmail() + " is already exists in our db");
         }
         Student studentResp = studentRepository.save(student);
+        logger.info("{} saved in our db", studentResp);
         return studentMapper.mapToDto(studentResp);
     }
 
     public CreateStudentResponseDTO getStudentById(Long id) {
         Student studentResp = studentRepository.findByIdAndDeletedIsFalse(id)
-                .orElseThrow(()->new ResourseNotFoundException("Resource "+id +" not found"));
+                .orElseThrow(() -> new ResourseNotFoundException("Resource " + id + " not found"));
         return studentMapper.mapToDto(studentResp);
     }
 
     public List<CreateStudentResponseDTO> getAllStudent() {
         List<Student> studentsResp = studentRepository.findByAndDeletedIsFalse();
         List<CreateStudentResponseDTO> stdentList =
-                studentsResp.stream().map(m->studentMapper.mapToDto(m)).
+                studentsResp.stream().map(m -> studentMapper.mapToDto(m)).
                         toList();
         return stdentList;
     }
 
     public UpdateStudentResponseDTO updateStudentDetails(Long id, UpdateStudentRequestDTO student) {
-        Student studentToSave  = studentRepository.findByIdAndDeletedIsFalse(id)
-                .orElseThrow(()-> new ResourseNotFoundException(id +" This resource you are trying o update not present in our db "));
+        Student studentToSave = studentRepository.findByIdAndDeletedIsFalse(id)
+                .orElseThrow(() -> new ResourseNotFoundException(
+                        id + " This resource you are trying o update not present in our db "));
 
         studentToSave.setAge(student.getAge());
         studentToSave.setName(student.getName());
@@ -65,17 +72,18 @@ public class StudentService {
 
     public void deleteStudent(Long id) {
         Student studentToBeDeleted = studentRepository.findById(id)
-                .orElseThrow(()->new ResourseNotFoundException(id +" id is not present in db"));
+                .orElseThrow(() -> new ResourseNotFoundException(id + " id is not present in db"));
         studentRepository.delete(studentToBeDeleted);
     }
-    public void deleteStudentSoftly(Long id){
-       Student studentToBeDeleted = studentRepository.findByIdAndDeletedIsFalse(id)
-               .orElseThrow(()->new ResourseNotFoundException(id + " not exists in db"));
+
+    public void deleteStudentSoftly(Long id) {
+        Student studentToBeDeleted = studentRepository.findByIdAndDeletedIsFalse(id)
+                .orElseThrow(() -> new ResourseNotFoundException(id + " not exists in db"));
         studentToBeDeleted.setDeleted(true);
         studentRepository.save(studentToBeDeleted);
     }
 
-    private boolean emailExists(Student student){
+    private boolean emailExists(Student student) {
         return studentRepository.existsByEmail(student.getEmail());
     }
 

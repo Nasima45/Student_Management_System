@@ -19,6 +19,21 @@ public class Student {
     private LocalDateTime createAt;
     private LocalDateTime updatedAt;
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", rollNo=" + rollNo +
+                ", Subject='" + Subject + '\'' +
+                ", createAt=" + createAt +
+                ", updatedAt=" + updatedAt +
+                ", deleted=" + deleted +
+                '}';
+    }
+
     public LocalDateTime getCreateAt() {
         return createAt;
     }

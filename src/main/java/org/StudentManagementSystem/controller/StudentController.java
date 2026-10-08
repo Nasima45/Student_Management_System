@@ -5,8 +5,8 @@ import org.StudentManagementSystem.dto.CreateStudentRequestDTO;
 import org.StudentManagementSystem.dto.CreateStudentResponseDTO;
 import org.StudentManagementSystem.dto.UpdateStudentRequestDTO;
 import org.StudentManagementSystem.dto.UpdateStudentResponseDTO;
-import org.StudentManagementSystem.entity.Student;
 import org.StudentManagementSystem.service.StudentService;
+import org.StudentManagementSystem.service.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,8 @@ public class StudentController {
     private StudentService studentService;
 
     @Autowired
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentServiceImpl studentService)
+    {
         this.studentService = studentService;
     }
 
@@ -45,7 +46,8 @@ public class StudentController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<UpdateStudentResponseDTO> updateStudent(@PathVariable Long id, @RequestBody UpdateStudentRequestDTO student) {
+    public ResponseEntity<UpdateStudentResponseDTO> updateStudent(@PathVariable Long id,
+                                                                  @RequestBody UpdateStudentRequestDTO student) {
         UpdateStudentResponseDTO studentResp = studentService.updateStudentDetails(id, student);
         return ResponseEntity.status(HttpStatus.OK).body(studentResp);
     }
@@ -56,8 +58,9 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
+
     @PatchMapping("/softDelete/{id}")
-    public ResponseEntity<String> deleteStudentSoftly(@PathVariable Long id){
+    public ResponseEntity<String> deleteStudentSoftly(@PathVariable Long id) {
         studentService.deleteStudentSoftly(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

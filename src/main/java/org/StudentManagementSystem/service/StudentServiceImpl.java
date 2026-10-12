@@ -1,5 +1,6 @@
 package org.StudentManagementSystem.service;
 
+import org.StudentManagementSystem.annotation.TrackExecutionTime;
 import org.StudentManagementSystem.dto.CreateStudentRequestDTO;
 import org.StudentManagementSystem.dto.CreateStudentResponseDTO;
 import org.StudentManagementSystem.dto.UpdateStudentRequestDTO;
@@ -29,7 +30,7 @@ public class StudentServiceImpl implements StudentService {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
     }
-
+    @TrackExecutionTime(warnAfter = 1000)
     public CreateStudentResponseDTO createStudent(CreateStudentRequestDTO studentReq) {
         logger.info("Students details need to be save {}",studentReq);
         Student student = studentMapper.mapToEntity(studentReq);
@@ -40,7 +41,7 @@ public class StudentServiceImpl implements StudentService {
         logger.info("{} saved in our db", studentResp);
         return studentMapper.mapToDto(studentResp);
     }
-
+    @TrackExecutionTime
     public CreateStudentResponseDTO getStudentById(Long id) {
         Student studentResp = studentRepository.findByIdAndDeletedIsFalse(id)
                 .orElseThrow(() -> new ResourseNotFoundException("Resource " + id + " not found"));

@@ -26,7 +26,8 @@ public class StudentController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateStudentResponseDTO> createStudent(@Valid @RequestBody CreateStudentRequestDTO student) {
+    public ResponseEntity<CreateStudentResponseDTO> createStudent(@Valid @RequestBody CreateStudentRequestDTO student,
+                                                                  @RequestParam(required = false) Long departmentId) {
         CreateStudentResponseDTO createdStudent = studentService.createStudent(student);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

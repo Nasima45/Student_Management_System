@@ -3,19 +3,58 @@ package org.StudentManagementSystem.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
-@Table(name="student_details")
+@Table(name = "student_details")
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String name;
     private int age;
     private String email;
     private int rollNo;
     private String Subject;
+    @ManyToOne
+    @JoinColumn(name = "dept_id")
+    private Department department;
+    @Embedded
+    @AttributeOverrides(
+            {
+                    @AttributeOverride(
+                            name = "houseNo",
+                            column = @Column(name = "current_house_no")
+                    ),
+                    @AttributeOverride(
+                            name = "houseName",
+                            column = @Column(name = "current_house_name")
+                    ),
+            }
+    )
+    private Address current_address;
+    @Embedded
+    @AttributeOverrides(
+            {
+                    @AttributeOverride(
+                            name = "houseNo",
+                            column = @Column(name = "permanent_house_no")
+                    ),
+                    @AttributeOverride(
+                            name = "houseName",
+                            column = @Column(name = "permanent_house_name")
+                    ),
+            }
+    )
+    private Address parmanent_address;
+    @ElementCollection
+    @CollectionTable(
+            name = "student_skills",
+            joinColumns = @JoinColumn(name = "student_id")
+    )
+    private Set<String> skills;
     private LocalDateTime createAt;
     private LocalDateTime updatedAt;
 

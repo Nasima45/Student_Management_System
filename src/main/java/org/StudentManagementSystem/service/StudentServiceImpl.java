@@ -5,10 +5,12 @@ import org.StudentManagementSystem.dto.CreateStudentRequestDTO;
 import org.StudentManagementSystem.dto.CreateStudentResponseDTO;
 import org.StudentManagementSystem.dto.UpdateStudentRequestDTO;
 import org.StudentManagementSystem.dto.UpdateStudentResponseDTO;
+import org.StudentManagementSystem.entity.Department;
 import org.StudentManagementSystem.entity.Student;
 import org.StudentManagementSystem.exception.DuplicateResourseException;
 import org.StudentManagementSystem.exception.ResourseNotFoundException;
 import org.StudentManagementSystem.mapper.StudentMapper;
+import org.StudentManagementSystem.repository.DepartmentRepository;
 import org.StudentManagementSystem.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +25,19 @@ public class StudentServiceImpl implements StudentService {
 
     private StudentRepository studentRepository;
     private StudentMapper studentMapper;
+    private DepartmentRepository departmentRepository;
 
     public StudentServiceImpl(StudentRepository studentRepository,
-                              StudentMapper studentMapper)
+                              StudentMapper studentMapper,
+                              DepartmentRepository departmentRepository)
     {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
+        this.departmentRepository = departmentRepository;
     }
     @TrackExecutionTime(warnAfter = 1000)
     public CreateStudentResponseDTO createStudent(CreateStudentRequestDTO studentReq) {
+        //Department department = departmentRepository.getDepartment(departmentId)
         logger.info("Students details need to be save {}",studentReq);
         Student student = studentMapper.mapToEntity(studentReq);
         if (emailExists(student)) {

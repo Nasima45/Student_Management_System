@@ -14,8 +14,10 @@ import org.StudentManagementSystem.repository.DepartmentRepository;
 import org.StudentManagementSystem.repository.StudentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -55,6 +57,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public List<CreateStudentResponseDTO> getAllStudent() {
+        //Pageable page = (Pageable) PageRequest.of(0,2);
         List<Student> studentsResp = studentRepository.findByAndDeletedIsFalse();
         List<CreateStudentResponseDTO> stdentList =
                 studentsResp.stream().map(m -> studentMapper.mapToDto(m)).

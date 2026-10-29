@@ -1,3 +1,4 @@
+/*
 package org.StudentManagementSystem.filter;
 
 import jakarta.servlet.*;
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Component
-@Order(1)
+//@Component
+//@Order(1)
 public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -17,12 +18,12 @@ public class AuthenticationFilter implements Filter {
         long startTime = System.currentTimeMillis();
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
-        String token = httpRequest.getHeader("token");
-        System.out.println("Token entered by user " + token);
-        if (token == null || !token.equals("1234")) {
-            httpServletResponse.setStatus(401);
-            return;
-        }
+//        String token = httpRequest.getHeader("token");
+//        System.out.println("Token entered by user " + token);
+//        if (token == null || !token.equals("1234")) {
+//            httpServletResponse.setStatus(401);
+//            return;
+//        }
         try {
             filterChain.doFilter(servletRequest, servletResponse);
         } finally {
@@ -31,3 +32,4 @@ public class AuthenticationFilter implements Filter {
         }
     }
 }
+*/

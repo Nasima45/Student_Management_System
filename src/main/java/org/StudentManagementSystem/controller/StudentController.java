@@ -1,10 +1,8 @@
 package org.StudentManagementSystem.controller;
 
 import jakarta.validation.Valid;
-import org.StudentManagementSystem.dto.CreateStudentRequestDTO;
-import org.StudentManagementSystem.dto.CreateStudentResponseDTO;
-import org.StudentManagementSystem.dto.UpdateStudentRequestDTO;
-import org.StudentManagementSystem.dto.UpdateStudentResponseDTO;
+import org.StudentManagementSystem.dto.*;
+import org.StudentManagementSystem.service.AuthService;
 import org.StudentManagementSystem.service.StudentService;
 import org.StudentManagementSystem.service.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +18,7 @@ public class StudentController {
     private StudentService studentService;
 
     @Autowired
-    public StudentController(StudentServiceImpl studentService)
-    {
+    public StudentController(StudentServiceImpl studentService) {
         this.studentService = studentService;
     }
 
